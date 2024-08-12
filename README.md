@@ -38,22 +38,35 @@ Convert number to Thai Baht format, but faster & fully typed.
 
 Run the benchmark to measure the speed among other libraries.
 
-- Apple Macbook Pro M1
+- Apple Macbook M1 Pro (Node v22.6.0)
 
   ```shell
   yarn benchmark
 
-  baht 0.5.0 (x100000): 355ms
-  baht 0.4.0 (x100000): 665ms
-  baht 0.3.2 (x100000): 2968ms
-  thaiBahtLib (x100000): 3189ms
-  bahttext (x100000): 3503ms
-  BAHTTEXT.js (x100000): 4816ms
-  thai-baht-text-ts (x100000): 7710ms
-  thai-baht-text (x100000): 8525ms
+  baht (x100000): 364ms
+  thai-baht-lib (code improved from baht.js) (x100000): 359ms
+  bahttext (x100000): 2791ms
+  BAHTTEXT.js (x100000): 2417ms
+  thai-baht-text (x100000): 5010ms
+  thai-baht-text-ts (x100000): 4465ms
+  BahtRext (x100000): 6131ms
   ```
 
-- Apple Macbook Pro with Node v14.16.0
+- Apple Macbook M1 Pro (Bun v1.1.22)
+
+  ```shell
+  bun ./benchmark
+
+  baht (x100000): 336ms
+  thai-baht-lib (code improved from baht.js) (x100000): 329ms
+  bahttext (x100000): 3574ms
+  BAHTTEXT.js (x100000): 2799ms
+  thai-baht-text (x100000): 6163ms
+  thai-baht-text-ts (x100000): 5143ms
+  BahtRext (x100000): 7085ms
+  ```
+
+- Apple Macbook Pro (Intel) with Node v14.16.0
 
   ```shell
   yarn benchmark
