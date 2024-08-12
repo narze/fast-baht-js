@@ -10,7 +10,6 @@ const ONES = [EMPTY, ED, TWO, ...THREE_TO_NINE];
 const TENS = [EMPTY, ...[EMPTY, YEE, ...THREE_TO_NINE].map(t => t + DIGIT[1])];
 const SUB_HUNDRED = TENS.flatMap(t => ONES.map(o => t + o));
 SUB_HUNDRED[1] = ONE;
-const SUB_TEN = [EMPTY, ONE, TWO, ...THREE_TO_NINE];
 
 function numberToWords(num: string): string {
   let output = EMPTY;
@@ -20,21 +19,22 @@ function numberToWords(num: string): string {
     const d = num[i];
     const di = length - i - 1;
     const diMod = di % 6;
-    const isSib = diMod === 1;
 
-    if (d === '0') {
-      // No-op
-    } else if (isSib && d === '1') {
-      output += DIGIT[diMod];
-    } else if (isSib && d === '2') {
-      output += YEE + DIGIT[diMod];
-    } else if (!diMod && d === '1' && i) {
-      output += ED;
-    } else {
-      output += SUB_TEN[Number(d)] + DIGIT[diMod];
+    if (d !== '0') {
+      const isSib = diMod === 1;
+
+      if (isSib && d === '1') {
+        output += DIGIT[diMod];
+      } else if (isSib && d === '2') {
+        output += YEE + DIGIT[diMod];
+      } else if (!diMod && d === '1' && i) {
+        output += ED;
+      } else {
+        output += SUB_HUNDRED[Number(d)] + DIGIT[diMod];
+      }
     }
 
-    if (!diMod && di) {
+    if (di && !diMod) {
       output += LAN;
     }
   }
@@ -107,25 +107,15 @@ export function convert(input: number | string): string | false {
     return false;
   }
 
-  if (!baht && !satang) {
+  if (baht || satang) {
+    return (
+      (isNegative ? 'ลบ' : EMPTY) +
+      numberToWords(bahtStr) +
+      (satang
+        ? (baht ? 'บาท' : EMPTY) + SUB_HUNDRED[satang] + 'สตางค์'
+        : 'บาทถ้วน')
+    );
+  } else {
     return 'ศูนย์บาทถ้วน';
   }
-
-  let output = isNegative ? 'ลบ' : EMPTY;
-
-  // Baht
-  output += numberToWords(bahtStr);
-
-  // Satang
-  if (satang) {
-    if (baht) output += 'บาท';
-
-    // Faster!
-    output += SUB_HUNDRED[satang] + 'สตางค์';
-    // output += numberToWords(satang.toString()) + 'สตางค์';
-  } else {
-    output += 'บาทถ้วน';
-  }
-
-  return output;
 }
