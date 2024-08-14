@@ -16,22 +16,31 @@ function numberToWords(num: string): string {
   const length = num.length;
 
   for (let i = 0; i < length; i++) {
-    const d = num[i];
+    const d = num.charAt(i);
     const di = length - i - 1;
     const diMod = di % 6;
 
-    if (d !== '0') {
-      const isSib = diMod === 1;
-
-      if (isSib && d === '1') {
-        output += DIGIT[diMod];
-      } else if (isSib && d === '2') {
-        output += YEE + DIGIT[diMod];
-      } else if (!diMod && d === '1' && i) {
-        output += ED;
-      } else {
+    switch (d) {
+      case '0':
+        break;
+      case '1':
+        if (diMod === 1) {
+          output += DIGIT[diMod];
+        } else if (diMod === 0 && i) {
+          output += ED;
+        } else {
+          output += SUB_HUNDRED[1] + DIGIT[diMod];
+        }
+        break;
+      case '2':
+        if (diMod === 1) {
+          output += YEE + DIGIT[diMod];
+        } else {
+          output += SUB_HUNDRED[2] + DIGIT[diMod];
+        }
+        break;
+      default:
         output += SUB_HUNDRED[Number(d)] + DIGIT[diMod];
-      }
     }
 
     if (di && !diMod) {
@@ -65,7 +74,6 @@ export function convert(input: number | string): string | false {
     if (formattedInput.startsWith('-')) {
       formattedInput = formattedInput.replace(/^-0+/, '-');
       if (formattedInput === '-') {
-        // catch "-0" (also catch "-" — consideration needed)
         formattedInput = '0';
       }
     } else {
