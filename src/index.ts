@@ -119,3 +119,5 @@ export function convert(input: number | string): string | false {
     return 'ศูนย์บาทถ้วน';
   }
 }
+
+export default { convert };
