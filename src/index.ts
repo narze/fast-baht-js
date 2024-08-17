@@ -116,12 +116,12 @@ export function convert(input: number | string): string | false {
   }
 
   if (baht || satang) {
-    const Negative = isNegative ? 'ลบ' : EMPTY;
-    const Currency = baht ? 'บาท' : EMPTY;
-    const SubCurrency = satang ? `${Currency + SUB_HUNDRED[satang]}สตางค์` : 'บาทถ้วน';
-    return `${Negative}${numberToWords(bahtStr)}${SubCurrency}`
+    const prefix = isNegative ? 'ลบ' : '';
+    const currency = baht ? `${numberToWords(bahtStr)}บาท` : '';
+    const subCurrency = satang ? `${SUB_HUNDRED[satang]}สตางค์` : 'ถ้วน';
+    return `${prefix}${currency}${subCurrency}`;
   }
-    return 'ศูนย์บาทถ้วน';
-  }
+  return 'ศูนย์บาทถ้วน';
+}
 
 export default { convert };
