@@ -67,7 +67,7 @@ export function convert(input: number | string): string | false {
     satang = Number.isInteger(input)
       ? 0
       : Math.floor(((input + Number.EPSILON * (baht || 1)) * 100) % 100);
-    bahtStr = '' + baht;
+    bahtStr = `${baht}`;
   } else if (typeof input === 'string') {
     let formattedInput = input.trim();
 
@@ -82,7 +82,7 @@ export function convert(input: number | string): string | false {
 
     let inputNum = Number(formattedInput);
 
-    if (isNaN(inputNum)) {
+    if (Number.isNaN(inputNum)) {
       return false;
     }
 
@@ -116,16 +116,12 @@ export function convert(input: number | string): string | false {
   }
 
   if (baht || satang) {
-    return (
-      (isNegative ? 'ลบ' : EMPTY) +
-      numberToWords(bahtStr) +
-      (satang
-        ? (baht ? 'บาท' : EMPTY) + SUB_HUNDRED[satang] + 'สตางค์'
-        : 'บาทถ้วน')
-    );
-  } else {
+    const Negative = isNegative ? 'ลบ' : EMPTY;
+    const Currency = baht ? 'บาท' : EMPTY;
+    const SubCurrency = satang ? `${Currency + SUB_HUNDRED[satang]}สตางค์` : 'บาทถ้วน';
+    return `${Negative}${numberToWords(bahtStr)}${SubCurrency}`
+  }
     return 'ศูนย์บาทถ้วน';
   }
-}
 
 export default { convert };
