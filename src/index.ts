@@ -116,8 +116,8 @@ export function convert(input: number | string): string | false {
   }
 
   if (baht || satang) {
-    const prefix = isNegative ? 'ลบ' : '';
-    const currency = baht ? `${numberToWords(bahtStr)}บาท` : '';
+    const prefix = isNegative ? 'ลบ' : EMPTY;
+    const currency = baht ? `${numberToWords(bahtStr)}บาท` : EMPTY;
     const subCurrency = satang ? `${SUB_HUNDRED[satang]}สตางค์` : 'ถ้วน';
     return `${prefix}${currency}${subCurrency}`;
   }
