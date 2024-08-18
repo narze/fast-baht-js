@@ -65,6 +65,7 @@
 
 	const libs = {
 		'Baht.js': (n) => convert(n),
+		'Baht.js (roundSatangs: true)': (n) => convert(n, { roundSatangs: true }),
 		'Excel / Google Sheets': (n) => fromExcel(n),
 		'BAHTTEXT.js': (n) => BAHTTEXTjs(n),
 		bahttext: (n) => bahttext(n),
@@ -74,7 +75,7 @@
 	};
 
 	function hasSameResultAsBahtJs(num, expected) {
-		return convert(num) === expected;
+		return convert(num, { roundSatangs: true }) === expected;
 	}
 </script>
 

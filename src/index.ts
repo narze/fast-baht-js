@@ -11,6 +11,14 @@ const TENS = [EMPTY, ...[EMPTY, YEE, ...THREE_TO_NINE].map(t => t + DIGIT[1])];
 const SUB_HUNDRED = TENS.flatMap(t => ONES.map(o => t + o));
 SUB_HUNDRED[1] = ONE;
 
+export const globalOptions = {
+  roundSatangs: false,
+};
+
+export function config(options: { roundSatangs?: boolean } = {}): void {
+  globalOptions.roundSatangs = !!options.roundSatangs;
+}
+
 function numberToWords(num: string): string {
   let output = EMPTY;
   const length = num.length;
@@ -51,7 +59,10 @@ function numberToWords(num: string): string {
   return output;
 }
 
-export function convert(input: number | string): string | false {
+export function convert(
+  input: number | string,
+  options: { roundSatangs?: boolean } = {}
+): string | false {
   let baht: number;
   let bahtStr: string;
   let satang: number;
@@ -63,11 +74,25 @@ export function convert(input: number | string): string | false {
       isNegative = true;
       input = 0 - input;
     }
-    baht = Math.floor(input);
-    satang = Number.isInteger(input)
-      ? 0
-      : Math.floor(((input + Number.EPSILON * (baht || 1)) * 100) % 100);
-    bahtStr = `${baht}`;
+
+    if (options.roundSatangs ?? globalOptions.roundSatangs) {
+      if (input * 100 < Number.MAX_SAFE_INTEGER) {
+        const rounded = Math.round(input * 100);
+        baht = Math.floor(rounded / 100);
+        satang = +String(Math.floor(rounded)).slice(-2);
+      } else {
+        const [b, s] = String(input).split('.');
+        satang = Math.round(Number(s) * 100);
+        baht = Number(b);
+      }
+    } else {
+      baht = Math.floor(input);
+      satang = Number.isInteger(input)
+        ? 0
+        : Math.floor(((input + Number.EPSILON * (baht || 1)) * 100) % 100);
+    }
+
+    bahtStr = String(baht);
   } else if (typeof input === 'string') {
     let formattedInput = input.trim();
 

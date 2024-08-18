@@ -1,4 +1,4 @@
-import { convert } from '../src';
+import { config, convert } from '../src';
 import { convert as bahtLatest } from 'baht';
 const { ThaiBaht: thaiBahtText } = require('thai-baht-text-ts');
 
@@ -193,6 +193,72 @@ describe('convert', () => {
       }
 
       expect(bahtArray).toEqual(satangArray);
+    });
+  });
+
+  describe('roundSatangs mode', () => {
+    it('rounds satangs to the nearest 2 digits', () => {
+      expect(convert(0.12, { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert(0.123, { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert(0.124, { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert(0.125, { roundSatangs: true })).toEqual('สิบสามสตางค์');
+      expect(convert(0.126, { roundSatangs: true })).toEqual('สิบสามสตางค์');
+
+      expect(convert(0.254, { roundSatangs: true })).toEqual('ยี่สิบห้าสตางค์');
+      expect(convert(0.255, { roundSatangs: true })).toEqual('ยี่สิบหกสตางค์');
+      expect(convert(0.256, { roundSatangs: true })).toEqual('ยี่สิบหกสตางค์');
+
+      expect(convert(0.994, { roundSatangs: true })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert(0.995, { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+      expect(convert(0.996, { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+    });
+
+    it('rounds satangs with config function', () => {
+      config({ roundSatangs: true });
+
+      expect(convert(0.12)).toEqual('สิบสองสตางค์');
+      expect(convert(0.123)).toEqual('สิบสองสตางค์');
+      expect(convert(0.124)).toEqual('สิบสองสตางค์');
+      expect(convert(0.125)).toEqual('สิบสามสตางค์');
+      expect(convert(0.126)).toEqual('สิบสามสตางค์');
+
+      expect(convert(0.254)).toEqual('ยี่สิบห้าสตางค์');
+      expect(convert(0.255)).toEqual('ยี่สิบหกสตางค์');
+      expect(convert(0.256)).toEqual('ยี่สิบหกสตางค์');
+
+      expect(convert(0.994)).toEqual('เก้าสิบเก้าสตางค์');
+      expect(convert(0.995)).toEqual('หนึ่งบาทถ้วน');
+      expect(convert(0.996)).toEqual('หนึ่งบาทถ้วน');
+
+      expect(convert(0.12, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.123, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.124, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.125, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.126, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+
+      expect(convert(0.254, { roundSatangs: false })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+      expect(convert(0.255, { roundSatangs: false })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+      expect(convert(0.256, { roundSatangs: false })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+
+      expect(convert(0.994, { roundSatangs: false })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert(0.995, { roundSatangs: false })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert(0.996, { roundSatangs: false })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+
+      config({ roundSatangs: false });
     });
   });
 
