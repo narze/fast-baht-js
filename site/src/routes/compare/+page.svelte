@@ -1,6 +1,6 @@
 <script lang="js">
 	import '$lib/global.css';
-	import { convert } from 'baht';
+	import { convert } from '../../../../src/index';
 
 	import BAHTTEXTjs from '$lib/BAHTTEXT';
 	import { bahttext } from 'bahttext';
