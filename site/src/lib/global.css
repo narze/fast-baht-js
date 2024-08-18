@@ -16,7 +16,7 @@ body {
 	margin: 0;
 	padding: 8px;
 	box-sizing: border-box;
-	font-family: "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-family: 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 }
 
 a {
@@ -85,7 +85,7 @@ tr {
 	border-bottom: 1px solid rgba(158, 158, 158, 0.164);
 }
 
-tbody>tr:hover {
+tbody > tr:hover {
 	background-color: #ffffdd;
 }
 
