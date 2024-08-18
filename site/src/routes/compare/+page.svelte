@@ -61,6 +61,8 @@
 		Number.MAX_SAFE_INTEGER - 1 // bahttext cannot count above this and will return empty string
 	];
 
+	let input = 500;
+
 	const libs = {
 		'Baht.js': (n) => convert(n),
 		'Excel / Google Sheets': (n) => fromExcel(n),
@@ -71,8 +73,8 @@
 		'BahtRext (Number stringified)': (n) => bahtRext.BT(String(n))
 	};
 
-	function hasSameResultAsExcel(num, expected) {
-		return fromExcel(num) === expected;
+	function hasSameResultAsBahtJs(num, expected) {
+		return convert(num) === expected;
 	}
 </script>
 
@@ -90,12 +92,27 @@
 				</tr>
 			</thead>
 			<tbody>
+				<!-- User input -->
+				<tr>
+					<td class="text-end"><input bind:value={input} type="number" class="input-number" /></td>
+					{#each Object.entries(libs) as [name, fn]}
+						{@const result = fn(input)}
+						<td class:same-result={hasSameResultAsBahtJs(input, result)}>
+							{#if name.includes('Excel')}
+								(custom input not supported)
+							{:else}
+								{fn(input)}
+							{/if}
+						</td>
+					{/each}
+				</tr>
+
 				{#each numbers as num}
 					<tr>
 						<td class="text-end"><code>{num}</code></td>
 						{#each Object.values(libs) as fn}
 							{@const result = fn(num)}
-							<td class:same-result={hasSameResultAsExcel(num, result)}>
+							<td class:same-result={hasSameResultAsBahtJs(num, result)}>
 								{result}
 							</td>
 						{/each}
