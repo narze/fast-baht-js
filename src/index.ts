@@ -8,19 +8,30 @@ const EMPTY = '';
 const DIGIT = [EMPTY, 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
 const ONES = [EMPTY, ED, TWO, ...THREE_TO_NINE];
 const TENS = [EMPTY, ...[EMPTY, YEE, ...THREE_TO_NINE].map(t => t + DIGIT[1])];
-const SUB_HUNDRED = TENS.flatMap(t => ONES.map(o => t + o));
-SUB_HUNDRED[1] = ONE;
+const SUB_HUNDRED_ED = TENS.flatMap(t => ONES.map(o => t + o));
+const SUB_HUNDRED = [EMPTY, ONE, ...SUB_HUNDRED_ED.slice(2)];
+const SUB_TEN = Object.fromEntries(
+  SUB_HUNDRED.slice(0, 10).map((n, idx) => [String(idx), n])
+);
 
 export const globalOptions = {
   roundSatangs: false,
+  strictEt: false,
 };
 
-export function config(options: { roundSatangs?: boolean } = {}): void {
+export function config(
+  options: { roundSatangs?: boolean; strictEt?: boolean } = {}
+): void {
   globalOptions.roundSatangs = !!options.roundSatangs;
+  globalOptions.strictEt = !!options.strictEt;
 }
 
-function numberToWords(num: string): string {
+function numberToWords(
+  num: string,
+  options: { strictEt?: boolean } = {}
+): string {
   let output = EMPTY;
+  let prev = EMPTY;
   const length = num.length;
 
   for (let i = 0; i < length; i++) {
@@ -28,32 +39,23 @@ function numberToWords(num: string): string {
     const di = length - i - 1;
     const diMod = di % 6;
 
-    switch (d) {
-      case '0':
-        break;
-      case '1':
-        if (diMod === 1) {
-          output += DIGIT[diMod];
-        } else if (diMod === 0 && i) {
-          output += ED;
-        } else {
-          output += SUB_HUNDRED[1] + DIGIT[diMod];
-        }
-        break;
-      case '2':
-        if (diMod === 1) {
-          output += YEE + DIGIT[diMod];
-        } else {
-          output += SUB_HUNDRED[2] + DIGIT[diMod];
-        }
-        break;
-      default:
-        output += SUB_HUNDRED[Number(d)] + DIGIT[diMod];
+    if (d !== '0') {
+      if (d === '1' && diMod === 1) {
+        output += DIGIT[diMod];
+      } else if (d === '1' && diMod === 0 && i) {
+        output += prev === '0' && !options.strictEt ? ONE : ED;
+      } else if (d === '2' && diMod === 1) {
+        output += YEE + DIGIT[diMod];
+      } else {
+        output += SUB_TEN[d] + DIGIT[diMod];
+      }
     }
 
     if (di && !diMod) {
       output += LAN;
     }
+
+    prev = d;
   }
 
   return output;
@@ -61,7 +63,7 @@ function numberToWords(num: string): string {
 
 export function convert(
   input: number | string,
-  options: { roundSatangs?: boolean } = {}
+  options: { roundSatangs?: boolean; strictEt?: boolean } = {}
 ): string | false {
   let baht: number;
   let bahtStr: string;
@@ -142,7 +144,11 @@ export function convert(
 
   if (baht || satang) {
     const prefix = isNegative ? 'ลบ' : EMPTY;
-    const currency = baht ? `${numberToWords(bahtStr)}บาท` : EMPTY;
+    const currency = baht
+      ? `${numberToWords(bahtStr, {
+          strictEt: options.strictEt ?? globalOptions.strictEt,
+        })}บาท`
+      : EMPTY;
     const subCurrency = satang ? `${SUB_HUNDRED[satang]}สตางค์` : 'ถ้วน';
     return `${prefix}${currency}${subCurrency}`;
   }

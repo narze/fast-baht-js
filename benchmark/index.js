@@ -64,7 +64,7 @@ const stringifiedNumbers = numbers.map(n => n.toString());
 
 const libraries = {
   baht: n => baht(n),
-  // bahtLatest: n => bahtLatest(n),
+  bahtLatest: n => bahtLatest(n),
   'thai-baht-lib (code improved from baht.js)': n => thaiBahtLib.bahtText(n),
   bahttext: n => bahttext(n),
   'BAHTTEXT.js': n => BAHTTEXTjs(n),

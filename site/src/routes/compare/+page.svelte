@@ -65,7 +65,8 @@
 
 	const libs = {
 		'Baht.js': (n) => convert(n),
-		'Baht.js (roundSatangs: true)': (n) => convert(n, { roundSatangs: true }),
+		'Baht.js (+roundSatangs)': (n) => convert(n, { roundSatangs: true }),
+		'Baht.js (+strictEt, +roundSatangs)': (n) => convert(n, { strictEt: true, roundSatangs: true }),
 		'Excel / Google Sheets': (n) => fromExcel(n),
 		'BAHTTEXT.js': (n) => BAHTTEXTjs(n),
 		bahttext: (n) => bahttext(n),
