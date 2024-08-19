@@ -1,22 +1,22 @@
 {
-  "version": "0.7.1",
+  "version": "1.0.0",
   "name": "baht",
   "author": "Manassarn Manoonchai",
-  "description": "Convert number to Thai Baht format, but faster & fully typed.",
+  "description": "Convert number to Thai Baht & Satang format. Blazingly fast. TypeScript / Deno / Bun supported.",
   "license": "MIT",
   "main": "dist/index.js",
   "homepage": "https://github.com/narze/baht.js",
   "repository": "github:narze/baht.js",
   "keywords": [
-    "Thai",
-    "Baht",
+    "bahttext",
+    "thai",
+    "baht",
     "THB",
-    "Money",
-    "Number",
-    "Format",
-    "Convert",
-    "TypeScript",
-    "JavaScript"
+    "money",
+    "number",
+    "format",
+    "convert",
+    "TypeScript"
   ],
   "typings": "dist/index.d.ts",
   "files": [

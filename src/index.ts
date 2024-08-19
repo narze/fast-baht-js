@@ -155,4 +155,4 @@ export function convert(
   return 'ศูนย์บาทถ้วน';
 }
 
-export default { convert };
+export default convert;
