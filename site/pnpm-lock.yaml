@@ -23,6 +23,9 @@ importers:
       '@types/eslint':
         specifier: ^9.6.0
         version: 9.6.0
+      baht:
+        specifier: ../
+        version: link:..
       bahtrext:
         specifier: ^1.3.3
         version: 1.3.3

@@ -17,6 +17,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@to-da-moon/thai-baht-lib": "^0.0.12",
 		"@types/eslint": "^9.6.0",
+		"baht": "../",
 		"bahtrext": "^1.3.3",
 		"bahttext": "^2.3.0",
 		"eslint": "^9.0.0",
