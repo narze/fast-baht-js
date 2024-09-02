@@ -3,8 +3,8 @@ import { assertEquals } from 'jsr:@std/assert@1';
 import Baht from '../src/index.ts';
 
 function assertBaht(value: number, expected: string) {
-  console.log(`${value} -> ${Baht.convert(value)} (Expected: ${expected})`);
-  assertEquals(Baht.convert(value), expected);
+  console.log(`${value} -> ${Baht(value)} (Expected: ${expected})`);
+  assertEquals(Baht(value), expected);
 }
 
 Deno.test('Baht.js works on Deno', () => {
