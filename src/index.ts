@@ -79,7 +79,7 @@ export function convert(
 
     if (options.roundSatangs ?? globalOptions.roundSatangs) {
       if (input * 100 < Number.MAX_SAFE_INTEGER) {
-        const rounded = Math.round(input * 100);
+        const rounded = Math.round((input + Number.EPSILON) * 100);
         baht = Math.floor(rounded / 100);
         satang = +String(Math.floor(rounded)).slice(-2);
       } else {
