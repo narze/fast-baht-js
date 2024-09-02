@@ -1,11 +1,11 @@
-const { bahttext } = require('bahttext');
-const THBText = require('thai-baht-text');
-const { ThaiBaht } = require('thai-baht-text-ts');
-const BAHTTEXTjs = require('./BAHTTEXT');
-const thaiBahtLib = require('@to-da-moon/thai-baht-lib');
-const bahtRext = require('bahtrext');
-const { convert: baht } = require('../dist/baht.cjs.production.min');
-const { convert: bahtLatest } = require('baht');
+import { bahttext } from 'bahttext';
+import THBText from 'thai-baht-text';
+import { ThaiBaht } from 'thai-baht-text-ts';
+import BAHTTEXTjs from '../site/src/lib/BAHTTEXT.js';
+import thaiBahtLib from '@to-da-moon/thai-baht-lib';
+import bahtRext from 'bahtrext';
+import { convert as baht } from '../dist/baht.cjs.development.js';
+import { convert as bahtLatest } from 'baht';
 
 const times = 100000;
 const numbers = [
