@@ -46,16 +46,10 @@
 	<h1>baht.js แปลงจำนวนเงินเป็นคำอ่าน</h1>
 	<p>Convert number to Thai Baht format, but faster [O(n)] & fully typed.</p>
 	<div class="input-number">
-		<input type="text" bind:value placeholder="กรอกจำนวนเงิน" />
+		<input type="text" bind:value placeholder="กรอกจำนวนเงิน" maxlength="100" />
 	</div>
 	<div class="result">
 		<p>
-			{new Intl.NumberFormat('th-TH', {
-				style: 'currency',
-				currency: 'THB',
-				minimumFractionDigits: 0,
-				maximumFractionDigits: 2
-			}).format(+value)} -
 			{convert(value)}
 		</p>
 		<p>
