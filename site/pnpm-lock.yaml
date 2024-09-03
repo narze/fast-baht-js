@@ -20,6 +20,9 @@ importers:
       '@to-da-moon/thai-baht-lib':
         specifier: ^0.0.12
         version: 0.0.12
+      '@types/diff':
+        specifier: ^5.2.2
+        version: 5.2.2
       '@types/eslint':
         specifier: ^9.6.0
         version: 9.6.0
@@ -32,6 +35,9 @@ importers:
       bahttext:
         specifier: ^2.3.0
         version: 2.3.0
+      diff:
+        specifier: ^6.0.0
+        version: 6.0.0
       eslint:
         specifier: ^9.0.0
         version: 9.9.0
@@ -395,6 +401,9 @@ packages:
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
+  '@types/diff@5.2.2':
+    resolution: {integrity: sha512-qVqLpd49rmJA2nZzLVsmfS/aiiBpfVE95dHhPVwG0NmSBAt+riPxnj53wq2oBq5m4Q2RF1IWFEUpnZTgrQZfEQ==}
+
   '@types/eslint@9.6.0':
     resolution: {integrity: sha512-gi6WQJ7cHRgZxtkQEoyHMppPjq9Kxo5Tjn2prSKDSmZrCz8TZ3jSRCeTJm+WoM+oB0WG37bRqLzaaU3q7JypGg==}
 
@@ -596,6 +605,10 @@ packages:
 
   devalue@5.0.0:
     resolution: {integrity: sha512-gO+/OMXF7488D+u3ue+G7Y4AA3ZmUnB3eHJXmBTgNHvr4ZNzl36A0ZtG+XCRNYCkYx/bFmw4qtkoFLa+wSrwAA==}
+
+  diff@6.0.0:
+    resolution: {integrity: sha512-NbGtgPSw7il+jeajji1H6iKjCk3r/ANQKw3FFUhGV50+MH5MKIMeUmi53piTr7jlkWcq9eS858qbkRzkehwe+w==}
+    engines: {node: '>=0.3.1'}
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -1504,6 +1517,8 @@ snapshots:
 
   '@types/cookie@0.6.0': {}
 
+  '@types/diff@5.2.2': {}
+
   '@types/eslint@9.6.0':
     dependencies:
       '@types/estree': 1.0.5
@@ -1709,6 +1724,8 @@ snapshots:
   detect-indent@6.1.0: {}
 
   devalue@5.0.0: {}
+
+  diff@6.0.0: {}
 
   dir-glob@3.0.1:
     dependencies:

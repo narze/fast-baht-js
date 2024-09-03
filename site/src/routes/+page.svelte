@@ -1,8 +1,9 @@
 <script lang="ts">
 	import '$lib/global.css';
 	import { convert } from 'baht';
+	import { diffChars, type Diff } from 'diff';
 	let value = '9998830750500';
-	var samples = [
+	const samples = [
 		'0',
 		'0.05',
 		' 0.5',
@@ -30,6 +31,15 @@
 		'123001998830750501',
 		'4123001998830750501'
 	];
+
+	function displayDiff(a: string, b: string) {
+		let diffs = diffChars(a, b);
+
+		return diffs
+			.map((part: Diff) => (part.added ? `<b>${part.value}</b>` : part.removed ? '' : part.value))
+			.join('')
+			.replace(/<\/b>([^<]*)<b>/g, '$1');
+	}
 </script>
 
 <main class="container">
@@ -39,7 +49,27 @@
 		<input type="text" bind:value placeholder="กรอกจำนวนเงิน" />
 	</div>
 	<div class="result">
-		<p>{convert(value)}</p>
+		<p>
+			{new Intl.NumberFormat('th-TH', {
+				style: 'currency',
+				currency: 'THB',
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 2
+			}).format(+value)} -
+			{convert(value)}
+		</p>
+		<p>
+			ปัดค่าเศษสตางค์ (<code>roundSatangs</code>) - {@html displayDiff(
+				convert(value) as string,
+				convert(value, { roundSatangs: true }) as string
+			)}
+		</p>
+		<p>
+			ใช้ "เอ็ด" ทุกจำนวน (<code>strictEt</code>) - {@html displayDiff(
+				convert(value) as string,
+				convert(value, { strictEt: true }) as string
+			)}
+		</p>
 	</div>
 	<h3>ตัวอย่างผลลัพธ์</h3>
 	<p>
@@ -61,11 +91,14 @@
 			</thead>
 			<tbody>
 				{#each samples as sample}
+					{@const converted = convert(sample) as string}
 					<tr
 						><td class="text-end"><code>{sample}</code></td>
-						<td>{convert(sample)}</td>
-						<td>{convert(sample, { roundSatangs: true })}</td>
-						<td>{convert(sample, { strictEt: true })}</td>
+						<td>{converted}</td>
+						<td
+							>{@html displayDiff(converted, convert(sample, { roundSatangs: true }) as string)}</td
+						>
+						<td>{@html displayDiff(converted, convert(sample, { strictEt: true }) as string)}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -92,6 +125,9 @@
 </main>
 
 <style scoped>
+	:global(b) {
+		color: rgb(30, 135, 240);
+	}
 	.result {
 		background-color: #d8eafc;
 		color: rgb(30, 135, 240);
