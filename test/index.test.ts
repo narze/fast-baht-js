@@ -237,6 +237,45 @@ describe('convert', () => {
       );
     });
 
+    it('rounds satangs to the nearest 2 digits with string input', () => {
+      expect(convert('0.12', { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert('0.123', { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert('0.124', { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert('0.125', { roundSatangs: true })).toEqual('สิบสามสตางค์');
+      expect(convert('0.126', { roundSatangs: true })).toEqual('สิบสามสตางค์');
+
+      expect(convert('0.254', { roundSatangs: true })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+      expect(convert('0.255', { roundSatangs: true })).toEqual(
+        'ยี่สิบหกสตางค์'
+      );
+      expect(convert('0.256', { roundSatangs: true })).toEqual(
+        'ยี่สิบหกสตางค์'
+      );
+
+      expect(convert('0.994', { roundSatangs: true })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert('0.995', { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+      expect(convert('0.996', { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+
+      expect(convert('1.004', { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+      expect(convert('1.005', { roundSatangs: true })).toEqual(
+        'หนึ่งบาทหนึ่งสตางค์'
+      );
+      expect(convert('2.004', { roundSatangs: true })).toEqual('สองบาทถ้วน');
+
+      expect(convert('2.005', { roundSatangs: true })).toEqual(
+        'สองบาทหนึ่งสตางค์'
+      );
+      expect(convert('3.004', { roundSatangs: true })).toEqual('สามบาทถ้วน');
+
+      expect(convert('3.005', { roundSatangs: true })).toEqual(
+        'สามบาทหนึ่งสตางค์'
+      );
+    });
+
     it('rounds satangs with config function', () => {
       config({ roundSatangs: true });
 

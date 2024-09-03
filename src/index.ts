@@ -129,10 +129,20 @@ export function convert(
       bahtStr = inputStr.slice(0, periodIdx);
       baht = +bahtStr;
       satangStr = inputStr.slice(periodIdx + 1);
-      satang = satangStr
-        ? Number(satangStr.slice(0, 2)) *
-          (satangStr.length >= 2 ? 1 : [100, 10][satangStr.length])
-        : 0;
+
+      if (options.roundSatangs ?? globalOptions.roundSatangs) {
+        satang = Math.round(+`${satangStr}000`.slice(0, 3) / 10);
+        if (satang === 100) {
+          baht += 1;
+          bahtStr = String(baht);
+          satang = 0;
+        }
+      } else {
+        satang = satangStr
+          ? Number(satangStr.slice(0, 2)) *
+            (satangStr.length >= 2 ? 1 : [100, 10][satangStr.length])
+          : 0;
+      }
     } else {
       baht = inputNum;
       bahtStr = inputStr;

@@ -51,14 +51,22 @@
 				<tr>
 					<th style="width:100px;" class="text-end"><span class="thead">จำนวนเงิน</span> </th>
 					<th class="text-start"><span class="thead">คำอ่าน</span></th>
+					<th class="text-start"
+						><span class="thead">ปัดค่าเศษสตางค์<br />(<code>roundSatangs</code>)</span></th
+					>
+					<th class="text-start"
+						><span class="thead">ใช้ "เอ็ด" ทุกจำนวน<br />(<code>strictEt</code>)</span></th
+					>
 				</tr>
 			</thead>
 			<tbody>
 				{#each samples as sample}
 					<tr
 						><td class="text-end"><code>{sample}</code></td>
-						<td>{convert(sample)}</td></tr
-					>
+						<td>{convert(sample)}</td>
+						<td>{convert(sample, { roundSatangs: true })}</td>
+						<td>{convert(sample, { strictEt: true })}</td>
+					</tr>
 				{/each}
 			</tbody>
 		</table>
