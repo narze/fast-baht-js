@@ -6,7 +6,7 @@
  * @author Earthchie http://www.earthchie.com/
  * @license WTFPL v.2 - http://www.wtfpl.net/
  **/
-function BAHTTEXT(num, suffix) {
+export default function BAHTTEXT(num, suffix) {
   'use strict';
 
   if (typeof suffix === 'undefined') {
@@ -108,4 +108,4 @@ function BAHTTEXT(num, suffix) {
   }
 }
 
-module.exports = BAHTTEXT;
+// module.exports = BAHTTEXT;

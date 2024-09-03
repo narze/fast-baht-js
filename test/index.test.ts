@@ -1,8 +1,11 @@
-import { convert } from '../src';
-import { convert as bahtLatest } from 'baht';
-const { ThaiBaht: thaiBahtText } = require('thai-baht-text-ts');
+import { config, convert } from '../src';
+import ThaiBahtText from 'thai-baht-text';
 
 describe('convert', () => {
+  beforeEach(() => {
+    config({ strictEt: true });
+  });
+
   it('should be a function', () => {
     expect(convert).toEqual(expect.any(Function));
   });
@@ -176,6 +179,10 @@ describe('convert', () => {
       expect(convert(0.75)).toEqual('เจ็ดสิบห้าสตางค์');
       expect(convert(0.99)).toEqual('เก้าสิบเก้าสตางค์');
       expect(convert(0.999)).toEqual('เก้าสิบเก้าสตางค์');
+      expect(convert(1.004)).toEqual('หนึ่งบาทถ้วน');
+      expect(convert(1.005)).toEqual('หนึ่งบาทถ้วน');
+      expect(convert(2.005)).toEqual('สองบาทถ้วน');
+      expect(convert(3.005)).toEqual('สามบาทถ้วน');
     });
 
     it('should convert 1-99 satangs correctly compared to baht', () => {
@@ -193,6 +200,126 @@ describe('convert', () => {
       }
 
       expect(bahtArray).toEqual(satangArray);
+    });
+  });
+
+  describe('roundSatangs mode', () => {
+    it('rounds satangs to the nearest 2 digits', () => {
+      expect(convert(0.12, { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert(0.123, { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert(0.124, { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert(0.125, { roundSatangs: true })).toEqual('สิบสามสตางค์');
+      expect(convert(0.126, { roundSatangs: true })).toEqual('สิบสามสตางค์');
+
+      expect(convert(0.254, { roundSatangs: true })).toEqual('ยี่สิบห้าสตางค์');
+      expect(convert(0.255, { roundSatangs: true })).toEqual('ยี่สิบหกสตางค์');
+      expect(convert(0.256, { roundSatangs: true })).toEqual('ยี่สิบหกสตางค์');
+
+      expect(convert(0.994, { roundSatangs: true })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert(0.995, { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+      expect(convert(0.996, { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+
+      expect(convert(1.004, { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+      expect(convert(1.005, { roundSatangs: true })).toEqual(
+        'หนึ่งบาทหนึ่งสตางค์'
+      );
+      expect(convert(2.004, { roundSatangs: true })).toEqual('สองบาทถ้วน');
+
+      expect(convert(2.005, { roundSatangs: true })).toEqual(
+        'สองบาทหนึ่งสตางค์'
+      );
+      expect(convert(3.004, { roundSatangs: true })).toEqual('สามบาทถ้วน');
+
+      expect(convert(3.005, { roundSatangs: true })).toEqual(
+        'สามบาทหนึ่งสตางค์'
+      );
+    });
+
+    it('rounds satangs to the nearest 2 digits with string input', () => {
+      expect(convert('0.12', { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert('0.123', { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert('0.124', { roundSatangs: true })).toEqual('สิบสองสตางค์');
+      expect(convert('0.125', { roundSatangs: true })).toEqual('สิบสามสตางค์');
+      expect(convert('0.126', { roundSatangs: true })).toEqual('สิบสามสตางค์');
+
+      expect(convert('0.254', { roundSatangs: true })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+      expect(convert('0.255', { roundSatangs: true })).toEqual(
+        'ยี่สิบหกสตางค์'
+      );
+      expect(convert('0.256', { roundSatangs: true })).toEqual(
+        'ยี่สิบหกสตางค์'
+      );
+
+      expect(convert('0.994', { roundSatangs: true })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert('0.995', { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+      expect(convert('0.996', { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+
+      expect(convert('1.004', { roundSatangs: true })).toEqual('หนึ่งบาทถ้วน');
+      expect(convert('1.005', { roundSatangs: true })).toEqual(
+        'หนึ่งบาทหนึ่งสตางค์'
+      );
+      expect(convert('2.004', { roundSatangs: true })).toEqual('สองบาทถ้วน');
+
+      expect(convert('2.005', { roundSatangs: true })).toEqual(
+        'สองบาทหนึ่งสตางค์'
+      );
+      expect(convert('3.004', { roundSatangs: true })).toEqual('สามบาทถ้วน');
+
+      expect(convert('3.005', { roundSatangs: true })).toEqual(
+        'สามบาทหนึ่งสตางค์'
+      );
+    });
+
+    it('rounds satangs with config function', () => {
+      config({ roundSatangs: true });
+
+      expect(convert(0.12)).toEqual('สิบสองสตางค์');
+      expect(convert(0.123)).toEqual('สิบสองสตางค์');
+      expect(convert(0.124)).toEqual('สิบสองสตางค์');
+      expect(convert(0.125)).toEqual('สิบสามสตางค์');
+      expect(convert(0.126)).toEqual('สิบสามสตางค์');
+
+      expect(convert(0.254)).toEqual('ยี่สิบห้าสตางค์');
+      expect(convert(0.255)).toEqual('ยี่สิบหกสตางค์');
+      expect(convert(0.256)).toEqual('ยี่สิบหกสตางค์');
+
+      expect(convert(0.994)).toEqual('เก้าสิบเก้าสตางค์');
+      expect(convert(0.995)).toEqual('หนึ่งบาทถ้วน');
+      expect(convert(0.996)).toEqual('หนึ่งบาทถ้วน');
+
+      expect(convert(0.12, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.123, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.124, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.125, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+      expect(convert(0.126, { roundSatangs: false })).toEqual('สิบสองสตางค์');
+
+      expect(convert(0.254, { roundSatangs: false })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+      expect(convert(0.255, { roundSatangs: false })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+      expect(convert(0.256, { roundSatangs: false })).toEqual(
+        'ยี่สิบห้าสตางค์'
+      );
+
+      expect(convert(0.994, { roundSatangs: false })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert(0.995, { roundSatangs: false })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+      expect(convert(0.996, { roundSatangs: false })).toEqual(
+        'เก้าสิบเก้าสตางค์'
+      );
+
+      config({ roundSatangs: false });
     });
   });
 
@@ -460,10 +587,198 @@ describe('convert', () => {
     });
   });
 
+  describe('with strictEt cases', () => {
+    it('passes strictEt: true & false', () => {
+      expect(convert(1.21, { strictEt: false })).toBe(
+        'หนึ่งบาทยี่สิบเอ็ดสตางค์'
+      );
+      expect(convert(1.21, { strictEt: true })).toBe(
+        'หนึ่งบาทยี่สิบเอ็ดสตางค์'
+      );
+
+      expect(convert(101.01, { strictEt: false })).toBe(
+        'หนึ่งร้อยหนึ่งบาทหนึ่งสตางค์'
+      );
+      expect(convert(101.01, { strictEt: true })).toBe(
+        'หนึ่งร้อยเอ็ดบาทหนึ่งสตางค์'
+      );
+
+      expect(convert(100001, { strictEt: false })).toBe('หนึ่งแสนหนึ่งบาทถ้วน');
+      expect(convert(100001, { strictEt: true })).toBe('หนึ่งแสนเอ็ดบาทถ้วน');
+
+      expect(convert(100021, { strictEt: false })).toBe(
+        'หนึ่งแสนยี่สิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(100021, { strictEt: true })).toBe(
+        'หนึ่งแสนยี่สิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(1000001, { strictEt: false })).toEqual(
+        'หนึ่งล้านหนึ่งบาทถ้วน'
+      );
+      expect(convert(1000001, { strictEt: true })).toEqual(
+        'หนึ่งล้านเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(11000001, { strictEt: false })).toEqual(
+        'สิบเอ็ดล้านหนึ่งบาทถ้วน'
+      );
+      expect(convert(11000001, { strictEt: true })).toEqual(
+        'สิบเอ็ดล้านเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(11000000, { strictEt: false })).toEqual(
+        'สิบเอ็ดล้านบาทถ้วน'
+      );
+      expect(convert(11000000, { strictEt: true })).toEqual(
+        'สิบเอ็ดล้านบาทถ้วน'
+      );
+
+      expect(convert(21000000, { strictEt: false })).toEqual(
+        'ยี่สิบเอ็ดล้านบาทถ้วน'
+      );
+      expect(convert(21000000, { strictEt: true })).toEqual(
+        'ยี่สิบเอ็ดล้านบาทถ้วน'
+      );
+
+      expect(convert(21000010, { strictEt: false })).toEqual(
+        'ยี่สิบเอ็ดล้านสิบบาทถ้วน'
+      );
+      expect(convert(21000010, { strictEt: true })).toEqual(
+        'ยี่สิบเอ็ดล้านสิบบาทถ้วน'
+      );
+
+      expect(convert(21000011, { strictEt: false })).toEqual(
+        'ยี่สิบเอ็ดล้านสิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(21000011, { strictEt: true })).toEqual(
+        'ยี่สิบเอ็ดล้านสิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(121000011, { strictEt: false })).toEqual(
+        'หนึ่งร้อยยี่สิบเอ็ดล้านสิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(121000011, { strictEt: true })).toEqual(
+        'หนึ่งร้อยยี่สิบเอ็ดล้านสิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(111, { strictEt: false })).toEqual(
+        'หนึ่งร้อยสิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(111, { strictEt: true })).toEqual(
+        'หนึ่งร้อยสิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(121, { strictEt: false })).toEqual(
+        'หนึ่งร้อยยี่สิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(121, { strictEt: true })).toEqual(
+        'หนึ่งร้อยยี่สิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(1000000000001, { strictEt: false })).toEqual(
+        'หนึ่งล้านล้านหนึ่งบาทถ้วน'
+      );
+      expect(convert(1000000000001, { strictEt: true })).toEqual(
+        'หนึ่งล้านล้านเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(1001000000001, { strictEt: false })).toEqual(
+        'หนึ่งล้านหนึ่งพันล้านหนึ่งบาทถ้วน'
+      );
+      expect(convert(1001000000001, { strictEt: true })).toEqual(
+        'หนึ่งล้านหนึ่งพันล้านเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(1001000001001, { strictEt: false })).toEqual(
+        'หนึ่งล้านหนึ่งพันล้านหนึ่งพันหนึ่งบาทถ้วน'
+      );
+      expect(convert(1001000001001, { strictEt: true })).toEqual(
+        'หนึ่งล้านหนึ่งพันล้านหนึ่งพันเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(1001001001001, { strictEt: false })).toEqual(
+        'หนึ่งล้านหนึ่งพันหนึ่งล้านหนึ่งพันหนึ่งบาทถ้วน'
+      );
+      expect(convert(1001001001001, { strictEt: true })).toEqual(
+        'หนึ่งล้านหนึ่งพันเอ็ดล้านหนึ่งพันเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(1001011001001, { strictEt: false })).toEqual(
+        'หนึ่งล้านหนึ่งพันสิบเอ็ดล้านหนึ่งพันหนึ่งบาทถ้วน'
+      );
+      expect(convert(1001011001001, { strictEt: true })).toEqual(
+        'หนึ่งล้านหนึ่งพันสิบเอ็ดล้านหนึ่งพันเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(9007199254740991, { strictEt: false })).toEqual(
+        'เก้าพันเจ็ดล้านหนึ่งแสนเก้าหมื่นเก้าพันสองร้อยห้าสิบสี่ล้านเจ็ดแสนสี่หมื่นเก้าร้อยเก้าสิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(9007199254740991, { strictEt: true })).toEqual(
+        'เก้าพันเจ็ดล้านหนึ่งแสนเก้าหมื่นเก้าพันสองร้อยห้าสิบสี่ล้านเจ็ดแสนสี่หมื่นเก้าร้อยเก้าสิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(-21, { strictEt: false })).toEqual('ลบยี่สิบเอ็ดบาทถ้วน');
+      expect(convert(-21, { strictEt: true })).toEqual('ลบยี่สิบเอ็ดบาทถ้วน');
+
+      expect(convert(-101, { strictEt: false })).toEqual(
+        'ลบหนึ่งร้อยหนึ่งบาทถ้วน'
+      );
+      expect(convert(-101, { strictEt: true })).toEqual(
+        'ลบหนึ่งร้อยเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(-111, { strictEt: false })).toEqual(
+        'ลบหนึ่งร้อยสิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(-111, { strictEt: true })).toEqual(
+        'ลบหนึ่งร้อยสิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert(-121, { strictEt: false })).toEqual(
+        'ลบหนึ่งร้อยยี่สิบเอ็ดบาทถ้วน'
+      );
+      expect(convert(-121, { strictEt: true })).toEqual(
+        'ลบหนึ่งร้อยยี่สิบเอ็ดบาทถ้วน'
+      );
+
+      expect(convert('4123001998830750501', { strictEt: false })).toBe(
+        'สี่ล้านหนึ่งแสนสองหมื่นสามพันหนึ่งล้านเก้าแสนเก้าหมื่นแปดพันแปดร้อยสามสิบล้านเจ็ดแสนห้าหมื่นห้าร้อยหนึ่งบาทถ้วน'
+      );
+      expect(convert('4123001998830750501', { strictEt: true })).toBe(
+        'สี่ล้านหนึ่งแสนสองหมื่นสามพันเอ็ดล้านเก้าแสนเก้าหมื่นแปดพันแปดร้อยสามสิบล้านเจ็ดแสนห้าหมื่นห้าร้อยเอ็ดบาทถ้วน'
+      );
+      expect(convert('-4123001998830750501', { strictEt: false })).toBe(
+        'ลบสี่ล้านหนึ่งแสนสองหมื่นสามพันหนึ่งล้านเก้าแสนเก้าหมื่นแปดพันแปดร้อยสามสิบล้านเจ็ดแสนห้าหมื่นห้าร้อยหนึ่งบาทถ้วน'
+      );
+      expect(convert('-4123001998830750501', { strictEt: true })).toBe(
+        'ลบสี่ล้านหนึ่งแสนสองหมื่นสามพันเอ็ดล้านเก้าแสนเก้าหมื่นแปดพันแปดร้อยสามสิบล้านเจ็ดแสนห้าหมื่นห้าร้อยเอ็ดบาทถ้วน'
+      );
+      expect(convert('-4123001998830750501.21', { strictEt: false })).toBe(
+        'ลบสี่ล้านหนึ่งแสนสองหมื่นสามพันหนึ่งล้านเก้าแสนเก้าหมื่นแปดพันแปดร้อยสามสิบล้านเจ็ดแสนห้าหมื่นห้าร้อยหนึ่งบาทยี่สิบเอ็ดสตางค์'
+      );
+      expect(convert('-4123001998830750501.21', { strictEt: true })).toBe(
+        'ลบสี่ล้านหนึ่งแสนสองหมื่นสามพันเอ็ดล้านเก้าแสนเก้าหมื่นแปดพันแปดร้อยสามสิบล้านเจ็ดแสนห้าหมื่นห้าร้อยเอ็ดบาทยี่สิบเอ็ดสตางค์'
+      );
+      expect(convert('-1654321.21', { strictEt: false })).toBe(
+        'ลบหนึ่งล้านหกแสนห้าหมื่นสี่พันสามร้อยยี่สิบเอ็ดบาทยี่สิบเอ็ดสตางค์'
+      );
+      expect(convert('-1654321.21', { strictEt: true })).toBe(
+        'ลบหนึ่งล้านหกแสนห้าหมื่นสี่พันสามร้อยยี่สิบเอ็ดบาทยี่สิบเอ็ดสตางค์'
+      );
+      expect(convert('-01654321.21', { strictEt: false })).toBe(
+        'ลบหนึ่งล้านหกแสนห้าหมื่นสี่พันสามร้อยยี่สิบเอ็ดบาทยี่สิบเอ็ดสตางค์'
+      );
+      expect(convert('-01654321.21', { strictEt: true })).toBe(
+        'ลบหนึ่งล้านหกแสนห้าหมื่นสี่พันสามร้อยยี่สิบเอ็ดบาทยี่สิบเอ็ดสตางค์'
+      );
+    });
+  });
+
   // it('equals to value from other library (STRESS TEST)', () => {
   //   for (let i = 1; i < 20000000; i += 1) {
-  //     expect(convert(i)).toEqual(bahtLatest(i));
-  //     expect(convert(i)).toEqual(thaiBahtText(i));
+  //     expect(convert(i)).toEqual(convert(i));
+  //     expect(convert(i)).toEqual(ThaiBahtText(i));
   //   }
   // });
 });

@@ -1,22 +1,22 @@
 {
-  "version": "0.7.1",
+  "version": "1.0.0",
   "name": "baht",
   "author": "Manassarn Manoonchai",
-  "description": "Convert number to Thai Baht format, but faster & fully typed.",
+  "description": "Convert number to Thai Baht & Satang format. Blazingly fast. TypeScript / Deno / Bun supported.",
   "license": "MIT",
   "main": "dist/index.js",
   "homepage": "https://github.com/narze/baht.js",
   "repository": "github:narze/baht.js",
   "keywords": [
-    "Thai",
-    "Baht",
+    "bahttext",
+    "thai",
+    "baht",
     "THB",
-    "Money",
-    "Number",
-    "Format",
-    "Convert",
-    "TypeScript",
-    "JavaScript"
+    "money",
+    "number",
+    "format",
+    "convert",
+    "TypeScript"
   ],
   "typings": "dist/index.d.ts",
   "files": [
@@ -35,7 +35,7 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "benchmark": "node ./benchmark"
+    "benchmark": "node ./benchmark/index.mjs"
   },
   "peerDependencies": {},
   "husky": {
@@ -61,17 +61,18 @@
     }
   ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^6.0.0",
-    "@to-da-moon/thai-baht-lib": "^0.0.10",
+    "@size-limit/preset-small-lib": "^11.1.4",
+    "@to-da-moon/thai-baht-lib": "^0.0.12",
     "baht": "^0.7.1",
-    "bahttext": "^2.0.2",
-    "husky": "^7.0.2",
-    "size-limit": "^6.0.0",
-    "thai-baht-text": "^1.0.8",
-    "thai-baht-text-ts": "^1.0.5",
+    "bahtrext": "^1.3.2",
+    "bahttext": "^2.3.0",
+    "husky": "^9.1.4",
+    "size-limit": "^11.1.4",
+    "thai-baht-text": "^2.0.5",
+    "thai-baht-text-ts": "^1.1.0",
     "tsdx": "^0.14.1",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.3"
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.4"
   },
   "dependencies": {}
 }
