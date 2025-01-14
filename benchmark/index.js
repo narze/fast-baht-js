@@ -68,7 +68,7 @@ const libraries = {
   'BAHTTEXT.js': n => BAHTTEXTjs(n),
   'thai-baht-text': n => THBText(n),
   'thai-baht-text-ts': n => ThaiBaht(n),
-  'BahtRext': n => BT(n),
+  'BahtRext': n => BT(`${n}`),
 };
 
 Object.entries(libraries).forEach(([name, fn]) => {
