@@ -5,6 +5,7 @@ const BAHTTEXTjs = require('./BAHTTEXT');
 const thaiBahtLib = require('@to-da-moon/thai-baht-lib');
 const { convert: baht } = require('../dist/baht.cjs.production.min');
 const { convert: bahtLatest } = require('baht');
+const { BT } = require('bahtrext');
 
 const times = 100000;
 const numbers = [
@@ -67,6 +68,7 @@ const libraries = {
   'BAHTTEXT.js': n => BAHTTEXTjs(n),
   'thai-baht-text': n => THBText(n),
   'thai-baht-text-ts': n => ThaiBaht(n),
+  'BahtRext': n => BT(`${n}`),
 };
 
 Object.entries(libraries).forEach(([name, fn]) => {
